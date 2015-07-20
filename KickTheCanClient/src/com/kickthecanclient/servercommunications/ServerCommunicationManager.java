@@ -28,6 +28,7 @@ public class ServerCommunicationManager<T> {
 	}
 
 	private String getUrl(ServerCommunicationBean request) {
+
 		StringBuilder sb = new StringBuilder();
 		sb.append(ServerCommunicationConst.BASE_URL);
 		sb.append(request.getActivity().getSimpleName().replace(ServerCommunicationConst.ACTIVITY_POST_POSITION, StringConst.EMPTY));
