@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import com.kickthecanclient.beans.sample.SampleRequestBean;
 import com.kickthecanclient.beans.sample.SampleResponceBean;
 import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
+import com.kickthecanclient.dbadapters.SampleDBAdapter;
+import com.kickthecanclient.entities.Sample;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
 
 /**
@@ -18,7 +20,7 @@ public class SampleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		callServer();
+		dbAccess();
 		setContentView(R.layout.activity_sample_main);
 	}
 
@@ -37,11 +39,32 @@ public class SampleMainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private SampleResponceBean callServer() {
-		SampleRequestBean requestParams = new SampleRequestBean("user", "9999");
-		ServerCommunicationBean bean = new ServerCommunicationBean(this.getClass(), requestParams, SampleResponceBean.class);
+	private SampleResponceBean callServer(String userId, String password) {
+		SampleRequestBean requestParams = new SampleRequestBean(userId, password);
+		ServerCommunicationBean bean = new ServerCommunicationBean("/sample/search", requestParams, SampleResponceBean.class);
 		ServerCommunicationManager<SampleResponceBean> manager = new ServerCommunicationManager<>();
 		SampleResponceBean responce = manager.call(bean);
 		return responce;
+	}
+
+	private Sample getEntity(SampleResponceBean responce) {
+		Sample sample = new Sample();
+		sample.setUserId(responce.getUserId());
+		sample.setPassword(responce.getPassword());
+		sample.setUserName(responce.getUserName());
+		return sample;
+	}
+
+	private void dbAccess() {
+		SampleDBAdapter sampleDBAdapter = new SampleDBAdapter(this);
+		sampleDBAdapter.open();
+		sampleDBAdapter.insert(getEntity(callServer("administrator", "admin")));
+		sampleDBAdapter.update(getEntity(callServer("administrator", "admin2")));
+		sampleDBAdapter.selectById("administrator");
+		sampleDBAdapter.selectByUserName("dummy");
+		sampleDBAdapter.selectAll();
+		sampleDBAdapter.deleteByUserId("administrator");
+		sampleDBAdapter.deleteAll();
+		sampleDBAdapter.close();
 	}
 }

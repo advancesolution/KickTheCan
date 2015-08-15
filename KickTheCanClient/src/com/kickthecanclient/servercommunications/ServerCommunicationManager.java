@@ -4,13 +4,13 @@ import android.os.AsyncTask;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
-import com.kickthecanclient.constants.ServerCommunicationConst;
-import com.kickthecanclient.constants.StringConst;
 
 /**
  * サーバ通信処理呼び出し用クラス.
  */
 public class ServerCommunicationManager<T> {
+
+	public static final String BASE_URL="http://10.0.2.2:8080/kickthecanserver";
 
 	@SuppressWarnings("unchecked")
 	public T call(ServerCommunicationBean request) {
@@ -30,9 +30,8 @@ public class ServerCommunicationManager<T> {
 	private String getUrl(ServerCommunicationBean request) {
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(ServerCommunicationConst.BASE_URL);
-		sb.append(request.getActivity().getSimpleName().replace(ServerCommunicationConst.ACTIVITY_POST_POSITION, StringConst.EMPTY));
-		sb.append(ServerCommunicationConst.SERVLET_POST_POSITION);
+		sb.append(BASE_URL);
+		sb.append(request.getUrl());
 		return sb.toString();
 	}
 }

@@ -10,9 +10,13 @@ import com.kickthecanserver.entities.Sample;
 @Data
 public class SampleResponceBean {
 
-	private Sample userData;
+	private String userId;
+	private String password;
+	private String userName;
 
 	public SampleResponceBean (Sample userData) {
-		this.userData = userData;
+		this.userId = userData.getUserId();
+		this.password = userData.getPassword();
+		this.userName = userData.getUserName();
 	}
 }

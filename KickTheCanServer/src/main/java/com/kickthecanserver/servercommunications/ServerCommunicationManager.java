@@ -15,7 +15,7 @@ import com.kickthecanserver.constants.ServerCommunicationConst;
 public class ServerCommunicationManager<T> {
 
 	@SuppressWarnings("unchecked")
-	public T readRequest(HttpServletRequest request, Class<?> beanClass) {
+	public T read(HttpServletRequest request, Class<?> beanClass) {
 		T bean = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
@@ -26,7 +26,7 @@ public class ServerCommunicationManager<T> {
 		return bean;
 	}
 
-	public void writeResponce(HttpServletResponse responce, Object o) {
+	public void write(HttpServletResponse responce, Object o) {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			responce.getOutputStream().write(mapper.writeValueAsString(o).getBytes());

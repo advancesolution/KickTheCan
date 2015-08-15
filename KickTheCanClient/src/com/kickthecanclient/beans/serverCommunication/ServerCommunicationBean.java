@@ -8,12 +8,12 @@ import lombok.Data;
 @Data
 public class ServerCommunicationBean {
 
-	private Class<?> activity;
+	private String url;
 	private Class<?> bean;
 	private Object requestParams;
 
-	public ServerCommunicationBean (Class<?> activity, Object requestParams, Class<?> bean) {
-		this.activity = activity;
+	public ServerCommunicationBean (String url, Object requestParams, Class<?> bean) {
+		this.url = url;
 		this.bean = bean;
 		this.requestParams = requestParams;
 	}

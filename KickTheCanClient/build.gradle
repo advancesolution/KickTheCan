@@ -3,6 +3,18 @@ apply plugin: 'com.android.application'
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile project(':appcompat_v7')
+    apt 'net.cattaka:cathandsgendroid-apt:0.4.1'
+    compile 'net.cattaka:cathandsgendroid-core:0.4.1'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    }
 }
 
 android {

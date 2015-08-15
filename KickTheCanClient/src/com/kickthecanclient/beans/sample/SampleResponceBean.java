@@ -1,7 +1,5 @@
 package com.kickthecanclient.beans.sample;
 
-import java.util.Map;
-
 import lombok.Data;
 
 /**
@@ -10,5 +8,7 @@ import lombok.Data;
 @Data
 public class SampleResponceBean {
 
-	private Map<String, Object> userData;
+	private String userId;
+	private String password;
+	private String userName;
 }
