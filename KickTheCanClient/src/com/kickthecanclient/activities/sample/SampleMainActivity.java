@@ -49,6 +49,7 @@ public class SampleMainActivity extends Activity {
 
 	private Sample getEntity(SampleResponceBean responce) {
 		Sample sample = new Sample();
+		sample.setId(1);
 		sample.setUserId(responce.getUserId());
 		sample.setPassword(responce.getPassword());
 		sample.setUserName(responce.getUserName());

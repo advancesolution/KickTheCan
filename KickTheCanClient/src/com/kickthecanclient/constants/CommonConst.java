@@ -10,4 +10,5 @@ public class CommonConst {
 	public static final String PERIOD = ".";
 	public static final String COMMA = ",";
 	public static final String HALF_SPACE = " ";
+	public static final String SINGLE_QUOTE = "'";
 }

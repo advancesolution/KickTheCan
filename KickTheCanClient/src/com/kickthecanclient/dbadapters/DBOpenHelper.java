@@ -5,7 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kickthecanclient.constants.CommonConst;
-import com.kickthecanclient.dbadapters.BaseDBAdapter.BaseColumn;
 import com.kickthecanclient.utils.StringUtil;
 
 /**
@@ -16,7 +15,7 @@ public class DBOpenHelper<T extends BaseColumn> extends SQLiteOpenHelper {
 	protected String tableName;
 	protected T[] entities;
 
-	private static final String DB = "sample.db";
+	private static final String DB = "kickTheCan.db";
 	private static final int DB_VERSION = 2;
 
 	public DBOpenHelper(Context c, String tableName, T[] entities) {
@@ -36,8 +35,9 @@ public class DBOpenHelper<T extends BaseColumn> extends SQLiteOpenHelper {
 			}
 			StringBuilder line = new StringBuilder();
 			line.append(StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[]{
-					entity.getName(), entity.getType(),
-					entity.isPrimaryKey() ? "PRIMARY KEY" : CommonConst.EMPTY}));
+					entity.getName(), entity.getType().name(),
+					entity.isPrimaryKey() ? "PRIMARY KEY" : CommonConst.EMPTY,
+					entity.isNotNull() ? "NOT NULL" : CommonConst.EMPTY}));
 			sb.append(line.toString());
 		}
 		sb.append(");");

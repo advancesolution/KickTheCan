@@ -1,34 +1,55 @@
 package com.kickthecanclient.dbadapters;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.content.Context;
 
-import com.kickthecanclient.dbadapters.BaseDBAdapter.BaseColumn;
 import com.kickthecanclient.dbadapters.SampleDBAdapter.SampleColumn;
 import com.kickthecanclient.entities.Sample;
+import com.kickthecanclient.enums.ColumnType;
 
 /**
  * お試しSQLite版Daoクラス.
  */
 public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 
-	private static final String TABLE_NAME = "Sample";
+	private static final String TABLE_NAME = "sample";
 
 	public enum SampleColumn implements BaseColumn {
+		ID {
+			@Override
+			public String getName() {
+				return "id";
+			}
+			@Override
+			public ColumnType getType() {
+				return ColumnType.NUMBER;
+			}
+			@Override
+			public boolean isPrimaryKey() {
+				return true;
+			}
+			@Override
+			public boolean isNotNull() {
+				return true;
+			}
+		},
+
 		USER_ID {
 			@Override
 			public String getName() {
 				return "userId";
 			}
 			@Override
-			public String getType() {
-				return "TEXT";
+			public ColumnType getType() {
+				return ColumnType.TEXT;
 			}
 			@Override
 			public boolean isPrimaryKey() {
+				return false;
+			}
+			@Override
+			public boolean isNotNull() {
 				return true;
 			}
 		},
@@ -39,11 +60,15 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 				return "password";
 			}
 			@Override
-			public String getType() {
-				return "TEXT";
+			public ColumnType getType() {
+				return ColumnType.TEXT;
 			}
 			@Override
 			public boolean isPrimaryKey() {
+				return false;
+			}
+			@Override
+			public boolean isNotNull() {
 				return false;
 			}
 		},
@@ -54,29 +79,22 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 				return "userName";
 			}
 			@Override
-			public String getType() {
-				return "TEXT";
+			public ColumnType getType() {
+				return ColumnType.TEXT;
 			}
 			@Override
 			public boolean isPrimaryKey() {
 				return false;
 			}
+			@Override
+			public boolean isNotNull() {
+				return false;
+			}
 		};
 	};
 
-	private DBOpenHelper<SampleColumn> dbHelper;
-
 	public SampleDBAdapter(Context context){
-		super(Sample.class, TABLE_NAME, SampleColumn.values());
-		this.dbHelper = new DBOpenHelper<>(context, TABLE_NAME, SampleColumn.values());
-	}
-
-	public void open() {
-		this.db = this.dbHelper.getWritableDatabase();
-	}
-
-	public void close(){
-		this.dbHelper.close();
+		super(context, Sample.class, TABLE_NAME, SampleColumn.values());
 	}
 
 	public void insert(Sample sample) {
@@ -84,31 +102,31 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 	}
 
 	public void update(Sample sample) {
-		Map<String, String> params = new HashMap<>();
-		params.put(SampleColumn.USER_ID.getName(), sample.getUserId());
-		super.update(params, sample);
+		WhereBuilder builder = new WhereBuilder(false);
+		builder.eq(SampleColumn.USER_ID.getName(), sample.getUserId());
+		super.update(builder, sample);
 	}
 
 	public Sample selectById(String userId){
-		Map<String, String> params = new HashMap<>();
-		params.put(SampleColumn.USER_ID.getName(), userId);
-		return super.selectById(params);
+		WhereBuilder builder = new WhereBuilder(true);
+		builder.eq(SampleColumn.USER_ID.getName(), userId);
+		return super.selectById(builder);
 	}
 
 	public List<Sample> selectByUserName(String userName){
-		Map<String, String> params = new HashMap<>();
-		params.put(SampleColumn.USER_NAME.getName(), userName);
-		return super.selectBy(params);
+		WhereBuilder builder = new WhereBuilder(true);
+		builder.eq(SampleColumn.USER_NAME.getName(), userName);
+		return super.selectBy(builder, SampleColumn.USER_ID.getName());
 	}
 
 	public List<Sample> selectAll(){
-		return super.selectAll();
+		return super.selectAll(SampleColumn.USER_ID.getName());
 	}
 
 	public boolean deleteByUserId(String userId){
-		Map<String, String> params = new HashMap<>();
-		params.put(SampleColumn.USER_ID.getName(), userId);
-		return super.deleteBy(params);
+		WhereBuilder builder = new WhereBuilder(true);
+		builder.eq(SampleColumn.USER_ID.getName(), userId);
+		return super.deleteBy(builder);
 	}
 
 	public boolean deleteAll(){
