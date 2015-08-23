@@ -2,26 +2,53 @@ package com.kickthecanserver.daos;
 
 import org.springframework.stereotype.Component;
 
+import com.kickthecanserver.daos.SampleDaoImpl.SampleColumn;
 import com.kickthecanserver.entities.Sample;
 
 /**
  * お試しDao実装クラス.
  */
 @Component
-public class SampleDaoImpl implements SampleDao {
+public class SampleDaoImpl extends BaseDao<Sample, SampleColumn> implements SampleDao {
 
-	@Override
+	public enum SampleColumn implements BaseColumn {
+		ID {
+			@Override
+			public String getName() {
+				return "id";
+			}
+		},
+
+		USER_ID {
+			@Override
+			public String getName() {
+				return "user_id";
+			}
+		},
+
+		PASSWORD {
+			@Override
+			public String getName() {
+				return "password";
+			}
+		},
+
+		USER_NAME {
+			@Override
+			public String getName() {
+				return "user_name";
+			}
+		};
+	};
+
+	public SampleDaoImpl() {
+		super(Sample.class);
+	}
+
 	public Sample get(String userId, String password) {
-		// べた書きはなくしたい。とりあえずのサンプル。
-		//		JdbcTemplate jdbcTemplate = new JdbcTemplate();
-		//		return jdbcTemplate.queryForObject(StringUtil.join(
-		//				"SELECT * FROM SAMPLE WHERE USER_ID = '", userId, "' AND PASSWORD = '", password, "'"), new BeanPropertyRowMapper<Sample>(Sample.class));
-
-		// DBまだ使えないので一旦dummy返却
-		Sample sample = new Sample();
-		sample.setUserId(userId);
-		sample.setPassword(password);
-		sample.setUserName("dummy");
+		WhereBuilder builder = new WhereBuilder();
+		builder.eq(SampleColumn.USER_ID.getName(), userId).and().eq(SampleColumn.PASSWORD.getName(), password);
+		Sample sample = super.selectBySingleResult(builder.getConditions());
 		return sample;
 	}
 }

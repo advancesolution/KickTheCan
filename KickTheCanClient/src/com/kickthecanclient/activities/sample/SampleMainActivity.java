@@ -59,8 +59,8 @@ public class SampleMainActivity extends Activity {
 	private void dbAccess() {
 		SampleDBAdapter sampleDBAdapter = new SampleDBAdapter(this);
 		sampleDBAdapter.open();
-		sampleDBAdapter.insert(getEntity(callServer("administrator", "admin")));
-		sampleDBAdapter.update(getEntity(callServer("administrator", "admin2")));
+		sampleDBAdapter.insert(getEntity(callServer("sample", "password")));
+		sampleDBAdapter.update(getEntity(callServer("sample2", "password2")));
 		sampleDBAdapter.selectById("administrator");
 		sampleDBAdapter.selectByUserName("dummy");
 		sampleDBAdapter.selectAll();
