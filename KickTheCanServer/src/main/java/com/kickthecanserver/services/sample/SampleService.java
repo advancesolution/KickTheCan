@@ -5,6 +5,8 @@ import com.kickthecanserver.beans.sample.SampleResponceBean;
 
 /**
  * お試しサービスクラス.
+ *
+ * @author ebihara
  */
 public interface SampleService {
 

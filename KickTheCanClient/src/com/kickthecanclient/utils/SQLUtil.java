@@ -5,6 +5,8 @@ import com.kickthecanclient.constants.SQLConst;
 
 /**
  * SQL処理クラス.
+ *
+ * @author ebihara
  */
 public class SQLUtil {
 

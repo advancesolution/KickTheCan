@@ -18,6 +18,8 @@ import com.kickthecanclient.constants.CommonConst;
 
 /**
  * サーバ通信用クラス.
+ *
+ * @author ebihara
  */
 @SuppressWarnings("deprecation")
 public class AsyncProcess extends AsyncTask<String, Integer, String> {

@@ -4,6 +4,8 @@ import lombok.Data;
 
 /**
  * サーバ通信用Bean.
+ *
+ * @author ebihara
  */
 @Data
 public class ServerCommunicationBean {

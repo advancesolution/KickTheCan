@@ -2,6 +2,8 @@ package com.kickthecanserver.constants;
 
 /**
  * サーバ通信用Const.
+ *
+ * @author ebihara
  */
 public class ServerCommunicationConst {
 

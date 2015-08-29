@@ -6,6 +6,8 @@ import com.kickthecanserver.entities.Sample;
 
 /**
  * お試しクライアント返却用Bean.
+ *
+ * @author ebihara
  */
 @Data
 public class SampleResponceBean {

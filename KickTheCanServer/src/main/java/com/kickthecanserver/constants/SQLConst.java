@@ -2,6 +2,8 @@ package com.kickthecanserver.constants;
 
 /**
  * SQL関連の定数クラス.
+ *
+ * @author ebihara
  */
 public class SQLConst {
 

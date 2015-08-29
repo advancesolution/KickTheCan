@@ -2,6 +2,8 @@ package com.kickthecanserver.constants;
 
 /**
  * 共通定数管理クラス.
+ *
+ * @author ebihara
  */
 public class CommonConst {
 

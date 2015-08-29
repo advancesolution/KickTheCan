@@ -4,6 +4,8 @@ import com.kickthecanserver.entities.Sample;
 
 /**
  * お試しDaoクラス.
+ *
+ * @author ebihara
  */
 public interface SampleDao {
 

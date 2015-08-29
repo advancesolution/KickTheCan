@@ -1,4 +1,4 @@
-package com.kickthecanserver.utils;
+package com.kickthecanclient.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

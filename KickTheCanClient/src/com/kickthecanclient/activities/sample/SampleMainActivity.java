@@ -11,9 +11,12 @@ import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
 import com.kickthecanclient.dbadapters.SampleDBAdapter;
 import com.kickthecanclient.entities.Sample;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
+import com.kickthecanclient.utils.PropertyUtil;
 
 /**
  * お試しActivity.
+ *
+ * @author ebihara
  */
 public class SampleMainActivity extends Activity {
 
@@ -49,10 +52,7 @@ public class SampleMainActivity extends Activity {
 
 	private Sample getEntity(SampleResponceBean responce) {
 		Sample sample = new Sample();
-		sample.setId(1);
-		sample.setUserId(responce.getUserId());
-		sample.setPassword(responce.getPassword());
-		sample.setUserName(responce.getUserName());
+		PropertyUtil.copyProperties(responce, sample);
 		return sample;
 	}
 
@@ -61,7 +61,7 @@ public class SampleMainActivity extends Activity {
 		sampleDBAdapter.open();
 		sampleDBAdapter.insert(getEntity(callServer("sample", "password")));
 		sampleDBAdapter.update(getEntity(callServer("sample2", "password2")));
-		sampleDBAdapter.selectById("administrator");
+		sampleDBAdapter.selectById("sample");
 		sampleDBAdapter.selectByUserName("dummy");
 		sampleDBAdapter.selectAll();
 		sampleDBAdapter.deleteByUserId("administrator");

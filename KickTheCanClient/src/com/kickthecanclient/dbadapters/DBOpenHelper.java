@@ -9,6 +9,8 @@ import com.kickthecanclient.utils.StringUtil;
 
 /**
  * DB定義処理用クラス.
+ *
+ * @author ebihara
  */
 public class DBOpenHelper<T extends BaseColumn> extends SQLiteOpenHelper {
 
@@ -16,7 +18,7 @@ public class DBOpenHelper<T extends BaseColumn> extends SQLiteOpenHelper {
 	protected T[] entities;
 
 	private static final String DB = "kickTheCan.db";
-	private static final int DB_VERSION = 2;
+	private static final int DB_VERSION = 24;
 
 	public DBOpenHelper(Context c, String tableName, T[] entities) {
 		super(c, DB, null, DB_VERSION);

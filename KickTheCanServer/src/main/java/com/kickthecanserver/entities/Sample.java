@@ -1,14 +1,16 @@
 package com.kickthecanserver.entities;
 
-import lombok.Data;
+import javax.persistence.Table;
 
-import org.springframework.stereotype.Component;
+import lombok.Data;
 
 /**
  * お試しエンティティ.
+ *
+ * @author ebihara
  */
 @Data
-@Component("sample")
+@Table(name="sample")
 public class Sample {
 
 	private int id;

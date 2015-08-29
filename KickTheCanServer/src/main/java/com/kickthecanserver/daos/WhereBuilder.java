@@ -1,8 +1,5 @@
 package com.kickthecanserver.daos;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.kickthecanserver.constants.CommonConst;
 import com.kickthecanserver.constants.SQLConst;
 import com.kickthecanserver.utils.SQLUtil;
@@ -10,41 +7,32 @@ import com.kickthecanserver.utils.StringUtil;
 
 /**
  * Where句生成用クラス.
+ *
+ * @author ebihara
  */
 public class WhereBuilder {
 
-	private String conditions;
-	private List<String> valueList;
+	private String condition;
 
-	/**
-	 * コンストラクタ
-	 *
-	 * @param separateParam false:パラメータを引数に分割しない true:パラメータを引数に分割する
-	 */
 	public WhereBuilder() {
-		this.conditions = CommonConst.EMPTY;
-		this.valueList = new ArrayList<>();
+		this.condition = CommonConst.EMPTY;
 	}
 
-	public String getConditions() {
-		return SQLUtil.inParentheses(conditions);
+	public String getCondition() {
+		return SQLUtil.inParentheses(this.condition);
 	}
 
-	public void setConditions(String conditions) {
-		this.conditions = conditions;
-	}
-
-	public String[] getValueArray() {
-		return (String[]) valueList.toArray(new String[0]);
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 
 	public WhereBuilder and() {
-		conditions = StringUtil.join(conditions, CommonConst.HALF_SPACE,  SQLConst.AND);
+		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE,  SQLConst.AND);
 		return this;
 	}
 
 	public WhereBuilder or() {
-		conditions = StringUtil.join(conditions, CommonConst.HALF_SPACE, SQLConst.OR);
+		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE, SQLConst.OR);
 		return this;
 	}
 
@@ -89,13 +77,12 @@ public class WhereBuilder {
 	}
 
 	private String getQueryValue(String value) {
-		valueList.add(value);
 		return SQLUtil.inSingleQuote(value);
 	}
 
 	private void joinItem(String itemName, String value, String condition) {
-		conditions = StringUtil.joinSeparator(CommonConst.HALF_SPACE,
-	 		new String[]{CommonConst.EMPTY, conditions, itemName, condition, value});
+		this.condition = StringUtil.joinSeparator(CommonConst.HALF_SPACE,
+				new String[]{CommonConst.EMPTY, this.condition, itemName, condition, value});
 	}
 
 	private String getInQuery(String[] values) {

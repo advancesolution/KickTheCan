@@ -4,6 +4,8 @@ import com.kickthecanclient.constants.CommonConst;
 
 /**
  * 文字列処理クラス.
+ *
+ * @author ebihara
  */
 public class StringUtil {
 

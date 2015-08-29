@@ -9,6 +9,8 @@ import com.kickthecanserver.daos.SampleDao;
 
 /**
  * お試しサービス実装クラス.
+ *
+ * @author ebihara
  */
 @Service
 public class SampleServiceImpl implements SampleService {

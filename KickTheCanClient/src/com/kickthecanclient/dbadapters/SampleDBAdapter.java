@@ -10,10 +10,10 @@ import com.kickthecanclient.enums.ColumnType;
 
 /**
  * お試しSQLite版Daoクラス.
+ *
+ * @author ebihara
  */
 public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
-
-	private static final String TABLE_NAME = "sample";
 
 	public enum SampleColumn implements BaseColumn {
 		ID {
@@ -94,7 +94,7 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 	};
 
 	public SampleDBAdapter(Context context){
-		super(context, Sample.class, TABLE_NAME, SampleColumn.values());
+		super(context, Sample.class, SampleColumn.values());
 	}
 
 	public void insert(Sample sample) {
@@ -102,19 +102,19 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 	}
 
 	public void update(Sample sample) {
-		WhereBuilder builder = new WhereBuilder(false);
+		WhereBuilder builder = new WhereBuilder();
 		builder.eq(SampleColumn.USER_ID.getName(), sample.getUserId());
 		super.update(builder, sample);
 	}
 
 	public Sample selectById(String userId){
-		WhereBuilder builder = new WhereBuilder(true);
+		WhereBuilder builder = new WhereBuilder();
 		builder.eq(SampleColumn.USER_ID.getName(), userId);
 		return super.selectById(builder);
 	}
 
 	public List<Sample> selectByUserName(String userName){
-		WhereBuilder builder = new WhereBuilder(true);
+		WhereBuilder builder = new WhereBuilder();
 		builder.eq(SampleColumn.USER_NAME.getName(), userName);
 		return super.selectBy(builder, SampleColumn.USER_ID.getName());
 	}
@@ -124,7 +124,7 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample, SampleColumn> {
 	}
 
 	public boolean deleteByUserId(String userId){
-		WhereBuilder builder = new WhereBuilder(true);
+		WhereBuilder builder = new WhereBuilder();
 		builder.eq(SampleColumn.USER_ID.getName(), userId);
 		return super.deleteBy(builder);
 	}

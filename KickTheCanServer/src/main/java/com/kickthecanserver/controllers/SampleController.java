@@ -13,6 +13,8 @@ import com.kickthecanserver.services.sample.SampleService;
 
 /**
  * お試しコントローラー.
+ *
+ * @author ebihara
  */
 @Controller
 @RequestMapping("sample")

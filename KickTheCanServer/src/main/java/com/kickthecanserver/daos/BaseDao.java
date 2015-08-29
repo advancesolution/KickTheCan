@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Table;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -15,9 +17,11 @@ import com.kickthecanserver.utils.StringUtil;
 
 /**
  * Dao基底クラス.
+ *
+ * @author ebihara
  */
 @Component
-public abstract class BaseDao<T, C extends BaseColumn> {
+public abstract class BaseDao<T> {
 
 	@Autowired
 	protected JdbcTemplate jdbcTemplate;
@@ -27,7 +31,7 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 
 	protected BaseDao(Class<T> clazz) {
 		this.clazz = clazz;
-		this.tableName = clazz.getAnnotation(Component.class).value();
+		this.tableName = clazz.getAnnotation(Table.class).name();
 	}
 
 	protected List<T> selectByList(String condition) {

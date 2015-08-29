@@ -10,30 +10,36 @@ import com.kickthecanclient.utils.StringUtil;
 
 /**
  * Where句生成用クラス.
+ *
+ * @author ebihara
  */
 public class WhereBuilder {
 
-	private String conditions;
+	private String condition;
+	private String needValueCondition;
 	private List<String> valueList;
-	private boolean separateParam;
 
-	/**
-	 * コンストラクタ
-	 *
-	 * @param separateParam false:パラメータを引数に分割しない true:パラメータを引数に分割する
-	 */
-	public WhereBuilder(boolean separateParam) {
-		this.conditions = CommonConst.EMPTY;
+	public WhereBuilder() {
+		this.condition = CommonConst.EMPTY;
+		this.needValueCondition = CommonConst.EMPTY;
 		this.valueList = new ArrayList<>();
-		this.separateParam = separateParam;
 	}
 
-	public String getConditions() {
-		return SQLUtil.inParentheses(conditions);
+	public String getCondition() {
+		return SQLUtil.inParentheses(this.condition);
 	}
 
-	public void setConditions(String conditions) {
-		this.conditions = conditions;
+	public String getNeedValueCondition() {
+		this.needValueCondition = this.condition;
+		for (String value : this.valueList) {
+			this.needValueCondition = this.needValueCondition.replaceAll(
+					SQLUtil.inSingleQuote(value), SQLConst.QUESTION);
+		}
+		return SQLUtil.inParentheses(this.needValueCondition);
+	}
+
+	public void setCondition(String condition) {
+		this.condition = condition;
 	}
 
 	public String[] getValueArray() {
@@ -41,12 +47,12 @@ public class WhereBuilder {
 	}
 
 	public WhereBuilder and() {
-		conditions = StringUtil.join(conditions, CommonConst.HALF_SPACE,  SQLConst.AND);
+		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE,  SQLConst.AND);
 		return this;
 	}
 
 	public WhereBuilder or() {
-		conditions = StringUtil.join(conditions, CommonConst.HALF_SPACE, SQLConst.OR);
+		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE, SQLConst.OR);
 		return this;
 	}
 
@@ -92,12 +98,12 @@ public class WhereBuilder {
 
 	private String getQueryValue(String value) {
 		valueList.add(value);
-		return this.separateParam ? SQLConst.QUESTION : SQLUtil.inSingleQuote(value);
+		return SQLUtil.inSingleQuote(value);
 	}
 
 	private void joinItem(String itemName, String value, String condition) {
-		conditions = StringUtil.joinSeparator(CommonConst.HALF_SPACE,
-	 		new String[]{CommonConst.EMPTY, conditions, itemName, condition, value});
+		this.condition = StringUtil.joinSeparator(CommonConst.HALF_SPACE,
+				new String[]{CommonConst.EMPTY, this.condition, itemName, condition, value});
 	}
 
 	private String getInQuery(String[] values) {

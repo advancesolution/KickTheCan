@@ -7,6 +7,8 @@ import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
 
 /**
  * サーバ通信処理呼び出し用クラス.
+ *
+ * @author ebihara
  */
 public class ServerCommunicationManager<T> {
 

@@ -11,6 +11,8 @@ import com.kickthecanserver.constants.ServerCommunicationConst;
 
 /**
  * サーバ通信処理定義クラス.
+ *
+ * @author ebihara
  */
 public class ServerCommunicationManager<T> {
 

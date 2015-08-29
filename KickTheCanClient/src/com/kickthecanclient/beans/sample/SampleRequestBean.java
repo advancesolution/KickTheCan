@@ -4,6 +4,8 @@ import lombok.Data;
 
 /**
  * お試しサーバ送信用Bean.
+ *
+ * @author ebihara
  */
 @Data
 public class SampleRequestBean {

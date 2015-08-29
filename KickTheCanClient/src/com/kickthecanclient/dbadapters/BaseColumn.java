@@ -4,6 +4,8 @@ import com.kickthecanclient.enums.ColumnType;
 
 /**
  * SQL実行処理関連の基底クラス.
+ *
+ * @author ebihara
  */
 public interface BaseColumn {
 	String getName();
