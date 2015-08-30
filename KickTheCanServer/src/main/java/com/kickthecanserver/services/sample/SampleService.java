@@ -11,4 +11,8 @@ import com.kickthecanserver.beans.sample.SampleResponceBean;
 public interface SampleService {
 
 	public SampleResponceBean getUserData(SampleRequestBean request);
+
+	public void insertUserData(SampleRequestBean request);
+
+	public void updateUserData(SampleRequestBean request);
 }

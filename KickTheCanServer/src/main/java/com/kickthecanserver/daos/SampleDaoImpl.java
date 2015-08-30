@@ -2,6 +2,7 @@ package com.kickthecanserver.daos;
 
 import org.springframework.stereotype.Component;
 
+import com.kickthecanserver.daos.SampleDaoImpl.SampleColumn;
 import com.kickthecanserver.entities.Sample;
 
 /**
@@ -10,13 +11,17 @@ import com.kickthecanserver.entities.Sample;
  * @author ebihara
  */
 @Component
-public class SampleDaoImpl extends BaseDao<Sample> implements SampleDao {
+public class SampleDaoImpl extends BaseDao<Sample, SampleColumn> implements SampleDao {
 
 	public enum SampleColumn implements BaseColumn {
 		ID {
 			@Override
 			public String getName() {
 				return "id";
+			}
+			@Override
+			public boolean isPrimaryKey() {
+				return true;
 			}
 		},
 
@@ -25,12 +30,20 @@ public class SampleDaoImpl extends BaseDao<Sample> implements SampleDao {
 			public String getName() {
 				return "user_id";
 			}
+			@Override
+			public boolean isPrimaryKey() {
+				return false;
+			}
 		},
 
 		PASSWORD {
 			@Override
 			public String getName() {
 				return "password";
+			}
+			@Override
+			public boolean isPrimaryKey() {
+				return false;
 			}
 		},
 
@@ -39,11 +52,23 @@ public class SampleDaoImpl extends BaseDao<Sample> implements SampleDao {
 			public String getName() {
 				return "user_name";
 			}
+			@Override
+			public boolean isPrimaryKey() {
+				return false;
+			}
 		};
 	};
 
 	public SampleDaoImpl() {
-		super(Sample.class);
+		super(Sample.class, SampleColumn.values());
+	}
+
+	public void insert(Sample sample) {
+		super.insert(sample);
+	}
+
+	public void update(Sample sample) {
+		super.update(sample);
 	}
 
 	public Sample get(String userId, String password) {

@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kickthecanserver.beans.sample.SampleRequestBean;
-import com.kickthecanserver.servercommunications.ServerCommunicationManager;
 import com.kickthecanserver.services.sample.SampleService;
 
 /**
@@ -18,15 +17,26 @@ import com.kickthecanserver.services.sample.SampleService;
  */
 @Controller
 @RequestMapping("sample")
-public class SampleController {
+public class SampleController extends BaseController<SampleRequestBean> {
 
 	@Autowired
 	private SampleService sampleService;
 
+	@RequestMapping("insert")
+	public void insert(HttpServletRequest req, HttpServletResponse res) {
+		SampleRequestBean requestBean = super.read(req, SampleRequestBean.class);
+		sampleService.insertUserData(requestBean);
+	}
+
+	@RequestMapping("update")
+	public void update(HttpServletRequest req, HttpServletResponse res) {
+		SampleRequestBean requestBean = super.read(req, SampleRequestBean.class);
+		sampleService.updateUserData(requestBean);
+	}
+
 	@RequestMapping("search")
 	public void search(HttpServletRequest req, HttpServletResponse res) {
-		ServerCommunicationManager<SampleRequestBean> manager = new ServerCommunicationManager<SampleRequestBean>();
-		SampleRequestBean requestBean = manager.read(req, SampleRequestBean.class);
-		manager.write(res, sampleService.getUserData(requestBean));
+		SampleRequestBean requestBean = super.read(req, SampleRequestBean.class);
+		super.write(res, sampleService.getUserData(requestBean));
 	}
 }

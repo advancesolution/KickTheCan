@@ -7,8 +7,6 @@ import com.kickthecanserver.constants.CommonConst;
 
 /**
  * 文字列処理クラス.
- *
- * @author ebihara
  */
 public class StringUtil {
 

@@ -23,4 +23,14 @@ public class SampleServiceImpl implements SampleService {
 		SampleResponceBean responceBean = new SampleResponceBean(sampleDao.get(request.getUserId(), request.getPassword()));
 		return responceBean;
 	}
+
+	@Override
+	public void insertUserData(SampleRequestBean request) {
+		sampleDao.insert(request.toEntity());
+	}
+
+	@Override
+	public void updateUserData(SampleRequestBean request) {
+		sampleDao.update(request.toEntity());
+	}
 }

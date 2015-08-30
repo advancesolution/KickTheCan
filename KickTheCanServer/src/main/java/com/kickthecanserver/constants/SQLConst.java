@@ -7,6 +7,7 @@ package com.kickthecanserver.constants;
  */
 public class SQLConst {
 
+	public static final String WHERE = "WHERE";
 	public static final String EQUAL = "=";
 	public static final String LEFT_EQUAL = ">=";
 	public static final String RIGHT_EQUAL = "<=";

@@ -1,5 +1,7 @@
 package com.kickthecanserver.utils;
 
+import java.util.Objects;
+
 import com.kickthecanserver.constants.CommonConst;
 import com.kickthecanserver.constants.SQLConst;
 
@@ -10,8 +12,8 @@ import com.kickthecanserver.constants.SQLConst;
  */
 public class SQLUtil {
 
-	public static String inSingleQuote(String target) {
-		return StringUtil.join(CommonConst.SINGLE_QUOTE, target, CommonConst.SINGLE_QUOTE);
+	public static String inSingleQuote(Object target) {
+		return StringUtil.join(CommonConst.SINGLE_QUOTE, Objects.isNull(target) ? null : target.toString(), CommonConst.SINGLE_QUOTE);
 	}
 
 	public static String inParentheses(String target) {

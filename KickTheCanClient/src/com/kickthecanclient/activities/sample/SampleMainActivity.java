@@ -11,7 +11,6 @@ import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
 import com.kickthecanclient.dbadapters.SampleDBAdapter;
 import com.kickthecanclient.entities.Sample;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
-import com.kickthecanclient.utils.PropertyUtil;
 
 /**
  * お試しActivity.
@@ -23,7 +22,9 @@ public class SampleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		dbAccess();
+		callServer("/sample/insert", new SampleRequestBean(11, "testUserId01", "testPassword01", "testUserName01"));
+		callServer("/sample/update", new SampleRequestBean(11, "testUserId04", "testPassword04", "testUserName03"));
+		dbAccess(callServer("/sample/search", new SampleRequestBean("testUserId04", "testPassword04")).toEntity());
 		setContentView(R.layout.activity_sample_main);
 	}
 
@@ -42,29 +43,21 @@ public class SampleMainActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private SampleResponceBean callServer(String userId, String password) {
-		SampleRequestBean requestParams = new SampleRequestBean(userId, password);
-		ServerCommunicationBean bean = new ServerCommunicationBean("/sample/search", requestParams, SampleResponceBean.class);
+	private SampleResponceBean callServer(String requestUrl, SampleRequestBean requestParam) {
+		ServerCommunicationBean bean = new ServerCommunicationBean(requestUrl, requestParam, SampleResponceBean.class);
 		ServerCommunicationManager<SampleResponceBean> manager = new ServerCommunicationManager<>();
-		SampleResponceBean responce = manager.call(bean);
-		return responce;
+		return manager.call(bean);
 	}
 
-	private Sample getEntity(SampleResponceBean responce) {
-		Sample sample = new Sample();
-		PropertyUtil.copyProperties(responce, sample);
-		return sample;
-	}
-
-	private void dbAccess() {
+	private void dbAccess(Sample entity) {
 		SampleDBAdapter sampleDBAdapter = new SampleDBAdapter(this);
 		sampleDBAdapter.open();
-		sampleDBAdapter.insert(getEntity(callServer("sample", "password")));
-		sampleDBAdapter.update(getEntity(callServer("sample2", "password2")));
-		sampleDBAdapter.selectById("sample");
-		sampleDBAdapter.selectByUserName("dummy");
+		sampleDBAdapter.insert(entity);
+		sampleDBAdapter.update(entity);
+		sampleDBAdapter.selectById(entity.getUserId());
+		sampleDBAdapter.selectByUserName(entity.getUserName());
 		sampleDBAdapter.selectAll();
-		sampleDBAdapter.deleteByUserId("administrator");
+		sampleDBAdapter.deleteByUserId(entity.getUserId());
 		sampleDBAdapter.deleteAll();
 		sampleDBAdapter.close();
 	}

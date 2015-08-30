@@ -1,5 +1,10 @@
 package com.kickthecanserver.daos;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.util.StringUtils;
+
 import com.kickthecanserver.constants.CommonConst;
 import com.kickthecanserver.constants.SQLConst;
 import com.kickthecanserver.utils.SQLUtil;
@@ -13,9 +18,19 @@ import com.kickthecanserver.utils.StringUtil;
 public class WhereBuilder {
 
 	private String condition;
+	private List<Object> valueList;
 
 	public WhereBuilder() {
 		this.condition = CommonConst.EMPTY;
+		this.valueList = new ArrayList<>();
+	}
+
+	public boolean isEmpty() {
+		return StringUtils.isEmpty(this.condition);
+	}
+
+	public boolean isNotEmpty() {
+		return !isEmpty();
 	}
 
 	public String getCondition() {
@@ -24,6 +39,10 @@ public class WhereBuilder {
 
 	public void setCondition(String condition) {
 		this.condition = condition;
+	}
+
+	public Object[] getValueArray() {
+		return (Object[]) valueList.toArray(new Object[0]);
 	}
 
 	public WhereBuilder and() {
@@ -36,7 +55,7 @@ public class WhereBuilder {
 		return this;
 	}
 
-	public WhereBuilder eq(String itemName, String value) {
+	public WhereBuilder eq(String itemName, Object value) {
 		joinItem(itemName, getQueryValue(value), SQLConst.EQUAL);
 		return this;
 	}
@@ -76,7 +95,8 @@ public class WhereBuilder {
 		return this;
 	}
 
-	private String getQueryValue(String value) {
+	private String getQueryValue(Object value) {
+		valueList.add(value);
 		return SQLUtil.inSingleQuote(value);
 	}
 

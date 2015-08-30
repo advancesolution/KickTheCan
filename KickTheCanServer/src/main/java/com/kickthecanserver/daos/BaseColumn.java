@@ -7,4 +7,5 @@ package com.kickthecanserver.daos;
  */
 public interface BaseColumn {
 	String getName();
+	boolean isPrimaryKey();
 }
