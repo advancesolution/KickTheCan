@@ -14,7 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.os.AsyncTask;
 
-import com.kickthecanclient.constants.CommonConst;
+import com.kickthecanclient.enums.CharacterCode;
 
 /**
  * サーバ通信用クラス.
@@ -24,17 +24,14 @@ import com.kickthecanclient.constants.CommonConst;
 @SuppressWarnings("deprecation")
 public class AsyncProcess extends AsyncTask<String, Integer, String> {
 
-	public static final String ACTIVITY_POST_POSITION = "MainActivity";
-	public static final String REQUEST_KEY = "request";
-
 	@Override
 	protected String doInBackground(String... contents) {
 		String result = null;
 		try {
 			ArrayList <NameValuePair> params = new ArrayList <>();
-			params.add(new BasicNameValuePair(REQUEST_KEY, contents[1]));
+			params.add(new BasicNameValuePair("request", contents[1]));
 			HttpPost post = new HttpPost(contents[0]);
-			post.setEntity(new UrlEncodedFormEntity(params, CommonConst.CHARACTER_CODE_UTF_8));
+			post.setEntity(new UrlEncodedFormEntity(params, CharacterCode.UTF_8.getValue()));
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpResponse responce = httpClient.execute(post);
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

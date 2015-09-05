@@ -1,10 +1,19 @@
 package com.kickthecanclient.dbadapters;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.kickthecanclient.constants.CommonConst;
+import com.kickthecanclient.enums.ColumnType;
+import com.kickthecanclient.enums.HalfSymbol;
+import com.kickthecanclient.utils.CaseUtil;
 import com.kickthecanclient.utils.StringUtil;
 
 /**
@@ -12,34 +21,54 @@ import com.kickthecanclient.utils.StringUtil;
  *
  * @author ebihara
  */
-public class DBOpenHelper<T extends BaseColumn> extends SQLiteOpenHelper {
+public class DBOpenHelper<T> extends SQLiteOpenHelper {
 
 	protected String tableName;
-	protected T[] entities;
+
+	private Class<T> clazz = null;
 
 	private static final String DB = "kickTheCan.db";
-	private static final int DB_VERSION = 24;
+	private static final int DB_VERSION = 27;
 
-	public DBOpenHelper(Context c, String tableName, T[] entities) {
+	public DBOpenHelper(Context c, Class<T> clazz) {
 		super(c, DB, null, DB_VERSION);
-		this.tableName = tableName;
-		this.entities = entities;
+		this.clazz = clazz;
+		this.tableName = clazz.getAnnotation(Table.class).name();
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		StringBuilder sb = new StringBuilder();
-		for (T entity : entities) {
+
+		T entity = null;
+		try {
+			entity = clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		for (Field field : entity.getClass().getDeclaredFields()) {
 			if (sb.length() == 0) {
-				sb.append(StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[]{"CREATE TABLE", tableName, "("}));
+				sb.append(StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(),
+						new String[]{"CREATE TABLE", tableName, "("}));
 			} else {
-				sb.append(CommonConst.COMMA);
+				sb.append(HalfSymbol.COMMA.getValue());
 			}
+
 			StringBuilder line = new StringBuilder();
-			line.append(StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[]{
-					entity.getName(), entity.getType().name(),
-					entity.isPrimaryKey() ? "PRIMARY KEY" : CommonConst.EMPTY,
-					entity.isNotNull() ? "NOT NULL" : CommonConst.EMPTY}));
+			line.append(StringUtil.join(HalfSymbol.SPACE.getValue(), CaseUtil.camelToSnake(field.getName())));
+			if (field.getType() == String.class) {
+				line.append(StringUtil.join(HalfSymbol.SPACE.getValue(), ColumnType.TEXT.name()));
+			} else if (field.getType() == Integer.TYPE || field.getType() == Integer.class) {
+				line.append(StringUtil.join(HalfSymbol.SPACE.getValue(), ColumnType.NUMBER.name()));
+			}
+			for (Annotation a : field.getAnnotations()) {
+				if (a instanceof Id) {
+					line.append(StringUtil.join(HalfSymbol.SPACE.getValue(), "PRIMARY KEY"));
+				} else if (a instanceof NotNull) {
+					line.append(StringUtil.join(HalfSymbol.SPACE.getValue(), "NOT NULL"));
+				}
+			}
 			sb.append(line.toString());
 		}
 		sb.append(");");

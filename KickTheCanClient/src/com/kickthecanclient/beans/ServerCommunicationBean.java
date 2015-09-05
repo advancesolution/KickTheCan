@@ -1,4 +1,4 @@
-package com.kickthecanclient.beans.serverCommunication;
+package com.kickthecanclient.beans;
 
 import lombok.Data;
 

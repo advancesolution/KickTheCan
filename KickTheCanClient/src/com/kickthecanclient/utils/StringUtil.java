@@ -1,6 +1,5 @@
 package com.kickthecanclient.utils;
 
-import com.kickthecanclient.constants.CommonConst;
 
 /**
  * 文字列処理クラス.
@@ -9,8 +8,10 @@ import com.kickthecanclient.constants.CommonConst;
  */
 public class StringUtil {
 
+	public static final String EMPTY = "";
+
 	public static boolean isEmpty(String str) {
-		return str == null || CommonConst.EMPTY.equals(str);
+		return str == null || EMPTY.equals(str);
 	}
 
 	public static String join(String... strArray) {

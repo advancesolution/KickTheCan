@@ -1,4 +1,4 @@
-package com.kickthecanclient.beans.property;
+package com.kickthecanclient.beans;
 
 import java.lang.reflect.Method;
 

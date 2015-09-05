@@ -1,13 +1,13 @@
-package com.kickthecanclient.activities.sample;
+package com.kickthecanclient.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.kickthecanclient.beans.sample.SampleRequestBean;
-import com.kickthecanclient.beans.sample.SampleResponceBean;
-import com.kickthecanclient.beans.serverCommunication.ServerCommunicationBean;
+import com.kickthecanclient.beans.SampleRequestBean;
+import com.kickthecanclient.beans.SampleResponceBean;
+import com.kickthecanclient.beans.ServerCommunicationBean;
 import com.kickthecanclient.dbadapters.SampleDBAdapter;
 import com.kickthecanclient.entities.Sample;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
@@ -22,9 +22,10 @@ public class SampleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		callServer("/sample/insert", new SampleRequestBean(11, "testUserId01", "testPassword01", "testUserName01"));
-		callServer("/sample/update", new SampleRequestBean(11, "testUserId04", "testPassword04", "testUserName03"));
-		dbAccess(callServer("/sample/search", new SampleRequestBean("testUserId04", "testPassword04")).toEntity());
+		callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
+		callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
+		dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
+		callServer("/sample/delete", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity();
 		setContentView(R.layout.activity_sample_main);
 	}
 

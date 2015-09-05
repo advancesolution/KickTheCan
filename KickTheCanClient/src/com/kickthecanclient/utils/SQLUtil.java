@@ -1,7 +1,6 @@
 package com.kickthecanclient.utils;
 
-import com.kickthecanclient.constants.CommonConst;
-import com.kickthecanclient.constants.SQLConst;
+import com.kickthecanclient.enums.HalfSymbol;
 
 /**
  * SQL処理クラス.
@@ -11,10 +10,12 @@ import com.kickthecanclient.constants.SQLConst;
 public class SQLUtil {
 
 	public static String inSingleQuote(String target) {
-		return StringUtil.join(CommonConst.SINGLE_QUOTE, target, CommonConst.SINGLE_QUOTE);
+		return StringUtil.join(HalfSymbol.SINGLE_QUOTE.getValue(),
+				target, HalfSymbol.SINGLE_QUOTE.getValue());
 	}
 
 	public static String inParentheses(String target) {
-		return StringUtil.join(SQLConst.START_PARENTHESES, target, SQLConst.END_PARENTHESES);
+		return StringUtil.join(HalfSymbol.START_PARENTHESES.getValue(),
+				target, HalfSymbol.END_PARENTHESES.getValue());
 	}
 }

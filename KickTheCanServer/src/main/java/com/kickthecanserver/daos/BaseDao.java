@@ -14,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.kickthecanserver.constants.CommonConst;
-import com.kickthecanserver.constants.SQLConst;
+import com.kickthecanserver.enums.HalfSymbol;
+import com.kickthecanserver.enums.OperatorSymbol;
 import com.kickthecanserver.utils.CaseUtil;
 import com.kickthecanserver.utils.SQLUtil;
 import com.kickthecanserver.utils.StringUtil;
@@ -26,7 +26,7 @@ import com.kickthecanserver.utils.StringUtil;
  * @author ebihara
  */
 @Component
-public abstract class BaseDao<T, C extends BaseColumn> {
+public abstract class BaseDao<T> {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -35,23 +35,25 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 	private String tableName = null;
 	private String selectQuery = null;
 	private String insertQuery = null;
-	private String updatetQuery = null;
+	private String updateQuery = null;
+	private String deleteQuery = null;
 	private List<String> primaryKeys = null;
 
-	protected BaseDao(Class<T> clazz, C[] columns) {
+	protected BaseDao(Class<T> clazz) {
 		this.clazz = clazz;
 		this.tableName = clazz.getAnnotation(Table.class).name();
 		this.selectQuery = getSelectQuery();
+		this.deleteQuery = getDeleteQuery();
 		this.insertQuery = getInsertQuery();
-		this.updatetQuery = getUpdateQuery();
-		this.primaryKeys = Arrays.asList(columns).stream().filter(o -> o.isPrimaryKey()).map(o ->o.getName()).collect(Collectors.toList());
+		this.updateQuery = getUpdateQuery();
+		this.primaryKeys = getPrimaryKeys();
 	}
 
-	protected List<T> selectByList(String condition) {
+	protected List<T> selectBy(String condition) {
 		return toBeans(jdbcTemplate.queryForList(concatCondition(selectQuery, condition)));
 	}
 
-	protected T selectBySingleResult(String condition) {
+	protected T selectById(String condition) {
 		return toBean(jdbcTemplate.queryForMap(concatCondition(selectQuery, condition)));
 	}
 
@@ -59,12 +61,16 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 		return toBeans(jdbcTemplate.queryForList(concatCondition(selectQuery, null)));
 	}
 
+	protected void deleteBy(String condition) {
+		jdbcTemplate.update(concatCondition(deleteQuery, condition));
+	}
+
 	protected void insert(T entity) {
 		jdbcTemplate.update(insertQuery, getValues(entity));
 	}
 
 	protected void update(T entity) {
-		jdbcTemplate.update(concatCondition(updatetQuery, getUpdateCondition(entity)), getValues(entity));
+		jdbcTemplate.update(concatCondition(updateQuery, getUpdateCondition(entity)), getValues(entity));
 	}
 
 	private List<PropertyDescriptor> getProperties() {
@@ -73,22 +79,36 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 	}
 
 	private String getWhere(String condition) {
-		return condition == null ? CommonConst.EMPTY : StringUtil.joinSeparator(
-				CommonConst.HALF_SPACE, new String[] {SQLConst.WHERE, condition});
+		return condition == null ? StringUtil.EMPTY : StringUtil.joinSeparator(
+				HalfSymbol.SPACE.getValue(), new String[] {"WHERE", condition});
 	}
 
 	private String getSelectQuery() {
-		return StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[] {"SELECT * FROM", tableName});
+		return StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(), new String[] {"SELECT * FROM", tableName});
+	}
+
+	private String getDeleteQuery() {
+		return StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(), new String[] {"DELETE FROM", tableName});
 	}
 
 	private String concatCondition(String query, String condition) {
-		return StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[] {query, getWhere(condition)});
+		return StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(), new String[] {query, getWhere(condition)});
 	}
 
 	private List<T> toBeans(List<Map<String, Object>> results) {
 		List<T> entities = new ArrayList<>();
 		results.forEach(m -> entities.add(toBean(m)));
 		return entities;
+	}
+
+	private List<String> getPrimaryKeys() {
+		List<String> primaryKeys = new ArrayList<>();
+		Arrays.asList(clazz.getDeclaredFields()).forEach(field -> {
+			primaryKeys.addAll(Arrays.asList(field.getAnnotations()).stream().filter(
+					annotation -> annotation instanceof javax.persistence.Id).map(a ->
+					field.getName()).collect(Collectors.toList()));
+		});
+		return primaryKeys;
 	}
 
 	private Object[] getValues(T entity) {
@@ -112,17 +132,17 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 
 		properties.forEach(o -> {
 			if (nameSb.length() != 0) {
-				nameSb.append(CommonConst.COMMA);
+				nameSb.append(HalfSymbol.COMMA.getValue());
 			}
-			nameSb.append(StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[] {
+			nameSb.append(StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(), new String[] {
 				CaseUtil.camelToSnake(
 				o.getName()),
-				SQLConst.EQUAL,
-				SQLConst.QUESTION
+				OperatorSymbol.EQUAL.getValue(),
+				HalfSymbol.QUESTION.getValue()
 			}));
 		});
 
-		String updateQuery = StringUtil.joinSeparator(CommonConst.HALF_SPACE,new String[] {
+		String updateQuery = StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(),new String[] {
 			"UPDATE",
 			tableName,
 			"SET",
@@ -157,14 +177,14 @@ public abstract class BaseDao<T, C extends BaseColumn> {
 
 		properties.forEach(o -> {
 			if (nameSb.length() != 0) {
-				nameSb.append(CommonConst.COMMA);
-				valueSb.append(CommonConst.COMMA);
+				nameSb.append(HalfSymbol.COMMA.getValue());
+				valueSb.append(HalfSymbol.COMMA.getValue());
 			}
 			nameSb.append(CaseUtil.camelToSnake(o.getName()));
-			valueSb.append(SQLConst.QUESTION);
+			valueSb.append(HalfSymbol.QUESTION.getValue());
 		});
 
-		String insertQuery = StringUtil.joinSeparator(CommonConst.HALF_SPACE, new String[]{
+		String insertQuery = StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(), new String[]{
 			"INSERT INTO",
 			this.tableName,
 			SQLUtil.inParentheses(nameSb.toString()),

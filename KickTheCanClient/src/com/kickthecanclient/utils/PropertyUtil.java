@@ -1,5 +1,6 @@
 package com.kickthecanclient.utils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.kickthecanclient.beans.property.PropertyBean;
+import com.kickthecanclient.beans.PropertyBean;
 
 /**
  * プロパティ関連の処理クラス.
@@ -18,26 +19,19 @@ import com.kickthecanclient.beans.property.PropertyBean;
  */
 public class PropertyUtil {
 
-	public static void setProperty(Object target, String name, Object value) {
+	public static void setProperty(Object target, String name, Object value)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 	    PropertyBean descriptor = getPropertyBean(target, name);
-	    try {
-			descriptor.getWriteMethod().invoke(target, new Object[]{value});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		descriptor.getWriteMethod().invoke(target, new Object[]{value});
 	}
 
-	public static Object getProperty(Object bean, String propertyName) {
-		Object property = null;
-		try {
-			property = getPropertyBean(bean, propertyName).getReadMethod().invoke(bean, new Object[]{});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return property;
+	public static Object getProperty(Object bean, String propertyName)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return getPropertyBean(bean, propertyName).getReadMethod().invoke(bean, new Object[]{});
 	}
 
-	public static void copyProperties(Object orig, Object dest) {
+	public static void copyProperties(Object dest, Object orig)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 
 		if ((orig instanceof Map)) {
 			for (Map.Entry<?,?> entry : ((Map<?, ?>) orig).entrySet()) {

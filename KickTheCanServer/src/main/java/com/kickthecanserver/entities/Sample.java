@@ -1,5 +1,6 @@
 package com.kickthecanserver.entities;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -13,6 +14,7 @@ import lombok.Data;
 @Table(name="sample")
 public class Sample {
 
+	@Id
 	private int id;
 	private String userId;
 	private String password;

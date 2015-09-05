@@ -1,4 +1,4 @@
-package com.kickthecanclient.beans.sample;
+package com.kickthecanclient.beans;
 
 import lombok.Data;
 
@@ -14,11 +14,6 @@ public class SampleRequestBean {
 	private String userId;
 	private String password;
 	private String userName;
-
-	public SampleRequestBean (String userId, String password) {
-		this.userId = userId;
-		this.password = password;
-	}
 
 	public SampleRequestBean (int id, String userId, String password, String userName) {
 		this.id = id;

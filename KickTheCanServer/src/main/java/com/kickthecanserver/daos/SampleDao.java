@@ -9,9 +9,11 @@ import com.kickthecanserver.entities.Sample;
  */
 public interface SampleDao {
 
-	public Sample get(String userId, String password);
+	Sample selectBy(String userId, String password);
 
-	public void insert(Sample sample);
+	void deleteBy(String userId, String password);
 
-	public void update(Sample sample);
+	void insert(Sample sample);
+
+	void update(Sample sample);
 }

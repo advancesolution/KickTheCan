@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import com.kickthecanserver.constants.CommonConst;
-import com.kickthecanserver.constants.SQLConst;
+import com.kickthecanserver.enums.HalfSymbol;
+import com.kickthecanserver.enums.OperatorSymbol;
 import com.kickthecanserver.utils.SQLUtil;
 import com.kickthecanserver.utils.StringUtil;
 
@@ -21,7 +21,7 @@ public class WhereBuilder {
 	private List<Object> valueList;
 
 	public WhereBuilder() {
-		this.condition = CommonConst.EMPTY;
+		this.condition = StringUtil.EMPTY;
 		this.valueList = new ArrayList<>();
 	}
 
@@ -46,52 +46,52 @@ public class WhereBuilder {
 	}
 
 	public WhereBuilder and() {
-		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE,  SQLConst.AND);
+		this.condition = StringUtil.join(this.condition, HalfSymbol.SPACE.getValue(),  OperatorSymbol.AND.getValue());
 		return this;
 	}
 
 	public WhereBuilder or() {
-		this.condition = StringUtil.join(this.condition, CommonConst.HALF_SPACE, SQLConst.OR);
+		this.condition = StringUtil.join(this.condition, HalfSymbol.SPACE.getValue(), OperatorSymbol.OR.getValue());
 		return this;
 	}
 
 	public WhereBuilder eq(String itemName, Object value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.EQUAL);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.EQUAL.getValue());
 		return this;
 	}
 
 	public WhereBuilder le(String itemName, String value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.LEFT_EQUAL);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.LEFT_EQUAL.getValue());
 		return this;
 	}
 
 	public WhereBuilder re(String itemName, String value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.RIGHT_EQUAL);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.RIGHT_EQUAL.getValue());
 		return this;
 	}
 
 	public WhereBuilder la(String itemName, String value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.LARGE);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.LARGE.getValue());
 		return this;
 	}
 
 	public WhereBuilder sm(String itemName, String value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.SMALL);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.SMALL.getValue());
 		return this;
 	}
 
 	public WhereBuilder ne(String itemName, String value) {
-		joinItem(itemName, getQueryValue(value), SQLConst.NOT_EQUAL);
+		joinItem(itemName, getQueryValue(value), OperatorSymbol.NOT_EQUAL.getValue());
 		return this;
 	}
 
 	public WhereBuilder in(String itemName, String[] values) {
-		joinItem(itemName, getInQuery(values), SQLConst.IN);
+		joinItem(itemName, getInQuery(values), OperatorSymbol.IN.getValue());
 		return this;
 	}
 
 	public WhereBuilder notIn(String itemName, String[] values) {
-		joinItem(itemName, getInQuery(values), SQLConst.NOT_IN);
+		joinItem(itemName, getInQuery(values), OperatorSymbol.NOT_IN.getValue());
 		return this;
 	}
 
@@ -101,8 +101,8 @@ public class WhereBuilder {
 	}
 
 	private void joinItem(String itemName, String value, String condition) {
-		this.condition = StringUtil.joinSeparator(CommonConst.HALF_SPACE,
-				new String[]{CommonConst.EMPTY, this.condition, itemName, condition, value});
+		this.condition = StringUtil.joinSeparator(HalfSymbol.SPACE.getValue(),
+				new String[]{StringUtil.EMPTY, this.condition, itemName, condition, value});
 	}
 
 	private String getInQuery(String[] values) {
@@ -114,6 +114,6 @@ public class WhereBuilder {
 			array[index++] = getQueryValue(value);
 		}
 
-		return SQLUtil.inParentheses(StringUtil.joinSeparator(CommonConst.COMMA, array));
+		return SQLUtil.inParentheses(StringUtil.joinSeparator(HalfSymbol.COMMA.getValue(), array));
 	}
 }

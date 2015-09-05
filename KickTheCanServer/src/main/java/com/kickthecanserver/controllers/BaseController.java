@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kickthecanserver.beans.sample.SampleRequestBean;
-import com.kickthecanserver.constants.ServerCommunicationConst;
 
 /**
  * コントローラー基底クラス.
@@ -24,7 +22,7 @@ public class BaseController<T> {
 		T bean = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-			bean = (T)mapper.readValue(request.getParameter(ServerCommunicationConst.REQUEST_KEY), SampleRequestBean.class);
+			bean = (T)mapper.readValue(request.getParameter("request"), beanClass);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

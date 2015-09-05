@@ -2,7 +2,6 @@ package com.kickthecanserver.daos;
 
 import org.springframework.stereotype.Component;
 
-import com.kickthecanserver.daos.SampleDaoImpl.SampleColumn;
 import com.kickthecanserver.entities.Sample;
 
 /**
@@ -11,70 +10,34 @@ import com.kickthecanserver.entities.Sample;
  * @author ebihara
  */
 @Component
-public class SampleDaoImpl extends BaseDao<Sample, SampleColumn> implements SampleDao {
-
-	public enum SampleColumn implements BaseColumn {
-		ID {
-			@Override
-			public String getName() {
-				return "id";
-			}
-			@Override
-			public boolean isPrimaryKey() {
-				return true;
-			}
-		},
-
-		USER_ID {
-			@Override
-			public String getName() {
-				return "user_id";
-			}
-			@Override
-			public boolean isPrimaryKey() {
-				return false;
-			}
-		},
-
-		PASSWORD {
-			@Override
-			public String getName() {
-				return "password";
-			}
-			@Override
-			public boolean isPrimaryKey() {
-				return false;
-			}
-		},
-
-		USER_NAME {
-			@Override
-			public String getName() {
-				return "user_name";
-			}
-			@Override
-			public boolean isPrimaryKey() {
-				return false;
-			}
-		};
-	};
+public class SampleDaoImpl extends BaseDao<Sample> implements SampleDao {
 
 	public SampleDaoImpl() {
-		super(Sample.class, SampleColumn.values());
+		super(Sample.class);
 	}
 
+	@Override
 	public void insert(Sample sample) {
 		super.insert(sample);
 	}
 
+	@Override
 	public void update(Sample sample) {
 		super.update(sample);
 	}
 
-	public Sample get(String userId, String password) {
+	@Override
+	public void deleteBy(String userId, String password) {
 		WhereBuilder builder = new WhereBuilder();
-		builder.eq(SampleColumn.USER_ID.getName(), userId).and().eq(SampleColumn.PASSWORD.getName(), password);
-		Sample sample = super.selectBySingleResult(builder.getCondition());
+		builder.eq("user_id", userId).and().eq("password", password);
+		super.deleteBy(builder.getCondition());
+	}
+
+	@Override
+	public Sample selectBy(String userId, String password) {
+		WhereBuilder builder = new WhereBuilder();
+		builder.eq("user_id", userId).and().eq("password", password);
+		Sample sample = super.selectById(builder.getCondition());
 		return sample;
 	}
 }

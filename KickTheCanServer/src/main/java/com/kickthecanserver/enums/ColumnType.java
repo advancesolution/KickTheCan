@@ -1,4 +1,4 @@
-package com.kickthecanclient.enums;
+package com.kickthecanserver.enums;
 
 /**
  * カラム属性.

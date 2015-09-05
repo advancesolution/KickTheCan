@@ -3,15 +3,15 @@ package com.kickthecanserver.utils;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-import com.kickthecanserver.constants.CommonConst;
-
 /**
  * 文字列処理クラス.
  */
 public class StringUtil {
 
+	public static final String EMPTY = "";
+
 	public static String nullToEmpty(String str) {
-		return str == null ? CommonConst.EMPTY : str;
+		return str == null ? EMPTY : str;
 	}
 
 	public static String join(String... array) {

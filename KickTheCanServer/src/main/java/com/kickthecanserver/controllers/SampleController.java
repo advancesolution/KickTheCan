@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.kickthecanserver.beans.sample.SampleRequestBean;
-import com.kickthecanserver.services.sample.SampleService;
+import com.kickthecanserver.beans.SampleRequestBean;
+import com.kickthecanserver.services.SampleService;
 
 /**
  * お試しコントローラー.
@@ -26,6 +26,12 @@ public class SampleController extends BaseController<SampleRequestBean> {
 	public void insert(HttpServletRequest req, HttpServletResponse res) {
 		SampleRequestBean requestBean = super.read(req, SampleRequestBean.class);
 		sampleService.insertUserData(requestBean);
+	}
+
+	@RequestMapping("delete")
+	public void delete(HttpServletRequest req, HttpServletResponse res) {
+		SampleRequestBean requestBean = super.read(req, SampleRequestBean.class);
+		sampleService.deleteUserData(requestBean);
 	}
 
 	@RequestMapping("update")

@@ -1,4 +1,4 @@
-package com.kickthecanserver.beans.sample;
+package com.kickthecanserver.beans;
 
 import lombok.Data;
 
