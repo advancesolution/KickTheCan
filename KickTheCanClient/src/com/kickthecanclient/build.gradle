@@ -1,0 +1,7 @@
+apply plugin: 'com.neenbedankt.android-apt'
+apt {
+    arguments {
+        androidManifestFile variant.processResources.manifestFile
+        resourcePackageName 'com.myproject.package'
+    }
+}
