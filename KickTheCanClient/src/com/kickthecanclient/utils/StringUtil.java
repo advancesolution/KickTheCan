@@ -1,6 +1,5 @@
 package com.kickthecanclient.utils;
 
-
 /**
  * 文字列処理クラス.
  *

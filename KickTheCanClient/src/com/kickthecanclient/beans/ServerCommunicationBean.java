@@ -11,12 +11,10 @@ import lombok.Data;
 public class ServerCommunicationBean {
 
 	private String url;
-	private Class<?> bean;
 	private Object requestParams;
 
-	public ServerCommunicationBean (String url, Object requestParams, Class<?> bean) {
+	public ServerCommunicationBean (String url, Object requestParams) {
 		this.url = url;
-		this.bean = bean;
 		this.requestParams = requestParams;
 	}
 }
