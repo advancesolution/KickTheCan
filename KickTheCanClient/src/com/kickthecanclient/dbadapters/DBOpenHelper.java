@@ -27,11 +27,10 @@ public class DBOpenHelper<T> extends SQLiteOpenHelper {
 
 	private Class<T> clazz = null;
 
-	private static final String DB = "kickTheCan.db";
-	private static final int DB_VERSION = 27;
+	private static final String DB = "kick_the_can.db";
 
 	public DBOpenHelper(Context c, Class<T> clazz) {
-		super(c, DB, null, DB_VERSION);
+		super(c, DB, null, 2);
 		this.clazz = clazz;
 		this.tableName = clazz.getAnnotation(Table.class).name();
 	}
@@ -80,5 +79,10 @@ public class DBOpenHelper<T> extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL(StringUtil.join("DROP TABLE IF EXISTS ", tableName, ";"));
 		onCreate(db);
+	}
+
+	@Override
+	public void onConfigure(SQLiteDatabase db) {
+		db.setVersion(1);
 	}
 }
