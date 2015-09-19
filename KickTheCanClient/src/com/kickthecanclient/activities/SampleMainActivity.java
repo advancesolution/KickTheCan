@@ -45,9 +45,9 @@ public class SampleMainActivity extends Activity {
 	}
 
 	private SampleResponceBean callServer(String requestUrl, SampleRequestBean requestParam) {
-		ServerCommunicationBean bean = new ServerCommunicationBean(requestUrl, requestParam, SampleResponceBean.class);
+		ServerCommunicationBean bean = new ServerCommunicationBean(requestUrl, requestParam);
 		ServerCommunicationManager<SampleResponceBean> manager = new ServerCommunicationManager<>();
-		return manager.call(bean);
+		return manager.call(bean, SampleResponceBean.class);
 	}
 
 	private void dbAccess(Sample entity) {

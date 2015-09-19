@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.stereotype.Controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,13 +18,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class BaseController<T> {
 
-	@SuppressWarnings("unchecked")
-	public T read(HttpServletRequest request, Class<?> beanClass) {
+	public T read(HttpServletRequest request, Class<T> beanClass) {
 		T bean = null;
 		try {
+			bean = beanClass.newInstance();
 			ObjectMapper mapper = new ObjectMapper();
-			bean = (T)mapper.readValue(request.getParameter("request"), beanClass);
-		} catch (IOException e) {
+			PropertyUtils.copyProperties(bean, mapper.readValue(request.getParameter("request"), beanClass));
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return bean;
