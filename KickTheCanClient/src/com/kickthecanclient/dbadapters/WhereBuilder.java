@@ -25,6 +25,10 @@ public class WhereBuilder {
 		this.valueList = new ArrayList<>();
 	}
 
+	public boolean isNotEmpty() {
+		return StringUtil.isNotEmpty(this.condition);
+	}
+
 	public String getCondition() {
 		return SQLUtil.inParentheses(this.condition);
 	}

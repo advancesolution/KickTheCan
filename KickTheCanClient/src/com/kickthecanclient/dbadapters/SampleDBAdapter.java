@@ -22,9 +22,7 @@ public class SampleDBAdapter extends BaseDBAdapter<Sample> {
 	}
 
 	public void update(Sample sample) {
-		WhereBuilder builder = new WhereBuilder();
-		builder.eq("user_id", sample.getUserId());
-		super.update(builder, sample);
+		super.update(sample);
 	}
 
 	public Sample selectById(String userId){

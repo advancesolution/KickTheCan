@@ -1,11 +1,13 @@
 package com.kickthecanclient.dbadapters;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import android.content.ContentValues;
@@ -24,11 +26,10 @@ import com.kickthecanclient.utils.PropertyUtil;
  */
 public class BaseDBAdapter<T> {
 
-	protected String tableName;
-	protected Class<T> clazz;
-	protected Context context;
-	protected SQLiteDatabase db;
-	protected DBOpenHelper<T> dbHelper;
+	private String tableName;
+	private Class<T> clazz;
+	private SQLiteDatabase db;
+	private DBOpenHelper<T> dbHelper;
 
 	protected BaseDBAdapter(Context context, Class<T> clazz) {
 		this.tableName = clazz.getAnnotation(Table.class).name();
@@ -48,8 +49,8 @@ public class BaseDBAdapter<T> {
 		this.db.insert(tableName, null, toContentValues(content));
 	}
 
-	protected void update(WhereBuilder builder, T content) {
-		this.db.update(tableName, toContentValues(content), builder.getCondition(), null);
+	protected void update(T content) {
+		this.db.update(tableName, toContentValues(content), getPrimaryWhereQuery(content), null);
 	}
 
 	protected T selectById(WhereBuilder builder){
@@ -76,7 +77,7 @@ public class BaseDBAdapter<T> {
 		return this.db.delete(tableName, null, null) > 0;
 	}
 
-	protected List<T> toEntities(Cursor cursor) {
+	private List<T> toEntities(Cursor cursor) {
 		List<T> entities = new ArrayList<>();
 		if(cursor.moveToFirst()){
 			do {
@@ -86,7 +87,7 @@ public class BaseDBAdapter<T> {
 		return entities;
 	}
 
-	protected T toEntity(Cursor cursor) {
+	private T toEntity(Cursor cursor) {
 		T entity = null;
 		try {
 			entity = this.clazz.newInstance();
@@ -107,7 +108,7 @@ public class BaseDBAdapter<T> {
 		return entity;
 	}
 
-	protected ContentValues toContentValues(Object o) {
+	private ContentValues toContentValues(Object o) {
 		ContentValues contentValues = new ContentValues();
 
 		List<PropertyBean> propertyBeans = PropertyUtil.getPropertyBeans(this.clazz);
@@ -122,5 +123,33 @@ public class BaseDBAdapter<T> {
 			}
 		}
 		return contentValues;
+	}
+
+	private String getPrimaryWhereQuery(T content) {
+		WhereBuilder builder = new WhereBuilder();
+		T entity = null;
+		try {
+			entity = clazz.newInstance();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		for (Field field : entity.getClass().getDeclaredFields()) {
+			for (Annotation a : field.getAnnotations()) {
+				if (a instanceof Id) {
+					if (builder.isNotEmpty()) {
+						builder.and();
+					}
+					try {
+						builder.eq(CaseUtil.camelToSnake(
+								field.getName()),PropertyUtil.getProperty(
+								content, field.getName()).toString());
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return builder.getCondition();
 	}
 }
