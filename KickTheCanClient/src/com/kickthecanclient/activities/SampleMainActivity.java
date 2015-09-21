@@ -22,6 +22,7 @@ public class SampleMainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
 		callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
 		dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
