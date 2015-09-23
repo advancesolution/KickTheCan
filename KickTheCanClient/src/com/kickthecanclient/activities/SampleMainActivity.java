@@ -1,6 +1,5 @@
 package com.kickthecanclient.activities;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,17 +16,16 @@ import com.kickthecanclient.servercommunications.ServerCommunicationManager;
  *
  * @author ebihara
  */
-public class SampleMainActivity extends Activity {
+public class SampleMainActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setContentView(R.layout.activity_sample_main);
 		callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
 		callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
 		dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
 		callServer("/sample/delete", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity();
-		setContentView(R.layout.activity_sample_main);
 	}
 
 	@Override

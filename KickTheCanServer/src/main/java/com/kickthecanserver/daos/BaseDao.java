@@ -119,7 +119,7 @@ public abstract class BaseDao<T> {
 			try {
 				values.add(PropertyUtils.getProperty(entity, o.getName()));
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		});
 		return values.toArray();
@@ -162,7 +162,7 @@ public abstract class BaseDao<T> {
 				}
 				where.eq(primaryKey, PropertyUtils.getProperty(entity, CaseUtil.toLowerCamel(primaryKey)).toString());
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new RuntimeException(e);
 			}
 		});
 		return where.getCondition();
@@ -211,7 +211,7 @@ public abstract class BaseDao<T> {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return entity;
 	}

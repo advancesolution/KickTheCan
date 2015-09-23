@@ -1,10 +1,9 @@
 package com.kickthecanclient.beans;
 
-import java.lang.reflect.InvocationTargetException;
-
 import lombok.Data;
 
 import com.kickthecanclient.entities.Sample;
+import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.PropertyUtil;
 
 /**
@@ -24,9 +23,8 @@ public class SampleResponceBean {
 		Sample sample = new Sample();
 		try {
 			PropertyUtil.copyProperties(sample, this);
-		} catch (IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			ApplicationUtil.exceptionHandler(e);
 		}
 		return sample;
 	}

@@ -14,7 +14,7 @@ public class PropertyFileUtil {
 		try {
 			bundle = ResourceBundle.getBundle(fileName);
 		} catch (Exception e) {
-			e.printStackTrace();
+			ApplicationUtil.exceptionHandler(e);
 		}
 		return bundle.getString(itemName);
 	}
