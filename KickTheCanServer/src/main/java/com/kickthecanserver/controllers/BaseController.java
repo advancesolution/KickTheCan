@@ -1,7 +1,5 @@
 package com.kickthecanserver.controllers
 ;
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -25,7 +23,7 @@ public class BaseController<T> {
 			ObjectMapper mapper = new ObjectMapper();
 			PropertyUtils.copyProperties(bean, mapper.readValue(request.getParameter("request"), beanClass));
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return bean;
 	}
@@ -34,8 +32,8 @@ public class BaseController<T> {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			responce.getOutputStream().write(mapper.writeValueAsString(o).getBytes());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 }

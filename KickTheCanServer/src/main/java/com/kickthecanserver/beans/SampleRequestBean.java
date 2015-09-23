@@ -24,7 +24,7 @@ public class SampleRequestBean {
 		try {
 			PropertyUtils.copyProperties(sample, this);
 		} catch (Exception e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return sample;
 	}

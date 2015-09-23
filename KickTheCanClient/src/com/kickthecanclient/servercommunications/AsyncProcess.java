@@ -1,7 +1,6 @@
 package com.kickthecanclient.servercommunications;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
@@ -15,6 +14,7 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 
 import com.kickthecanclient.enums.CharacterCode;
+import com.kickthecanclient.utils.ApplicationUtil;
 
 /**
  * サーバ通信用クラス.
@@ -37,8 +37,8 @@ public class AsyncProcess extends AsyncTask<String, Integer, String> {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			responce.getEntity().writeTo(outputStream);
 			result = outputStream.toString();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			ApplicationUtil.exceptionHandler(e);
 		}
 
 		return result;

@@ -2,7 +2,6 @@ package com.kickthecanclient.dbadapters;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +15,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.kickthecanclient.beans.PropertyBean;
+import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.CaseUtil;
 import com.kickthecanclient.utils.PropertyUtil;
 
@@ -103,7 +103,7 @@ public class BaseDBAdapter<T> {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			ApplicationUtil.exceptionHandler(e);
 		}
 		return entity;
 	}
@@ -117,9 +117,8 @@ public class BaseDBAdapter<T> {
 			try {
 				contentValues.put(CaseUtil.camelToSnake(propertyBean.getName()),
 						Objects.toString(PropertyUtil.getProperty(o, propertyBean.getName()), null));
-			} catch (IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				e.printStackTrace();
+			} catch (Exception e) {
+				ApplicationUtil.exceptionHandler(e);
 			}
 		}
 		return contentValues;
@@ -131,7 +130,7 @@ public class BaseDBAdapter<T> {
 		try {
 			entity = clazz.newInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			ApplicationUtil.exceptionHandler(e);
 		}
 
 		for (Field field : entity.getClass().getDeclaredFields()) {
@@ -145,7 +144,7 @@ public class BaseDBAdapter<T> {
 								field.getName()),PropertyUtil.getProperty(
 								content, field.getName()).toString());
 					} catch (Exception e) {
-						e.printStackTrace();
+						ApplicationUtil.exceptionHandler(e);
 					}
 				}
 			}
