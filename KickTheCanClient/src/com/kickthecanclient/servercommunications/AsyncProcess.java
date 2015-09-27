@@ -14,7 +14,6 @@ import org.apache.http.message.BasicNameValuePair;
 import android.os.AsyncTask;
 
 import com.kickthecanclient.enums.CharacterCode;
-import com.kickthecanclient.utils.ApplicationUtil;
 
 /**
  * サーバ通信用クラス.
@@ -38,7 +37,7 @@ public class AsyncProcess extends AsyncTask<String, Integer, String> {
 			responce.getEntity().writeTo(outputStream);
 			result = outputStream.toString();
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 
 		return result;

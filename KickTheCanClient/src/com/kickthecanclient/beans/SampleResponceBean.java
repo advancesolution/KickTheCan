@@ -3,7 +3,6 @@ package com.kickthecanclient.beans;
 import lombok.Data;
 
 import com.kickthecanclient.entities.Sample;
-import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.PropertyUtil;
 
 /**
@@ -24,7 +23,7 @@ public class SampleResponceBean {
 		try {
 			PropertyUtil.copyProperties(sample, this);
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 		return sample;
 	}

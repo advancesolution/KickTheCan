@@ -1,8 +1,7 @@
 package com.kickthecanclient.activities;
 
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.View;
 
 import com.kickthecanclient.beans.SampleRequestBean;
 import com.kickthecanclient.beans.SampleResponceBean;
@@ -10,6 +9,7 @@ import com.kickthecanclient.beans.ServerCommunicationBean;
 import com.kickthecanclient.dbadapters.SampleDBAdapter;
 import com.kickthecanclient.entities.Sample;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
+import com.kickthecanclient.utils.DialogUtil;
 
 /**
  * お試しActivity.
@@ -20,27 +20,26 @@ public class SampleMainActivity extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_sample_main);
-		callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
-		callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
-		dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
-		callServer("/sample/delete", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity();
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.sample_main, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
+		try {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.activity_sample_main);
+			registListener();
+			callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
+			callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
+			dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
+			callServer("/sample/delete", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity();
+		} catch (Exception e) {
+			DialogUtil.showErrorDialog(e);
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void registListener() {
+		findViewById(R.id.showErrorDialogButton).setOnClickListener(new View.OnClickListener() {
+		    @Override
+		    public void onClick(View v) {
+		    	DialogUtil.showErrorDialog(new Exception());
+		    }
+		});
 	}
 
 	private SampleResponceBean callServer(String requestUrl, SampleRequestBean requestParam) {

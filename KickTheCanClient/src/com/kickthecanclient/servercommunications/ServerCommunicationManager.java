@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kickthecanclient.beans.ServerCommunicationBean;
-import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.PropertyFileUtil;
 import com.kickthecanclient.utils.PropertyUtil;
 import com.kickthecanclient.utils.StringUtil;
@@ -25,9 +24,11 @@ public class ServerCommunicationManager<T> {
 			AsyncProcess asyncProcess = new AsyncProcess();
 			AsyncTask<String,Integer,String> responce = asyncProcess.execute(
 					StringUtil.join(PropertyFileUtil.getProperty("server", "url"), request.getUrl()), json);
-			PropertyUtil.copyProperties(result, mapper.readValue(responce.get(), clazz));
+			if (StringUtil.isNotEmpty(responce.get())) {
+				PropertyUtil.copyProperties(result, mapper.readValue(responce.get(), clazz));
+			}
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 		return result;
 	}

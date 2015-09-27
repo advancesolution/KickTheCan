@@ -1,9 +1,6 @@
 package com.kickthecanclient.utils;
 
-import android.content.Context;
-import android.content.Intent;
-
-import com.kickthecanclient.activities.ErrorActivity;
+import android.app.Activity;
 
 /**
  * システム情報管理用クラス.
@@ -12,16 +9,13 @@ import com.kickthecanclient.activities.ErrorActivity;
  */
 public class ApplicationUtil {
 
-	private static Context instance = null;
+	private static Activity instance = null;
 
-	public static void setInstance(Context context) {
+	public static void setInstance(Activity context) {
 		instance = context;
 	}
 
-	public static void exceptionHandler(Exception e) {
-		e.printStackTrace();
-		Intent intent = new Intent(instance, ErrorActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		instance.startActivity(intent);
+	public static Activity getInstance() {
+		return instance;
 	}
 }
