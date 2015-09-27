@@ -8,7 +8,8 @@ import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.WindowManager;
 
-import com.kickthecanclient.dialogFlagments.SystemErrorDialogFragment;
+import com.kickthecanclient.dialogFlagments.ErrorDialogFragment;
+import com.kickthecanclient.enums.MessageId;
 
 /**
  * ダイアログ関連の処理用クラス.
@@ -17,9 +18,8 @@ import com.kickthecanclient.dialogFlagments.SystemErrorDialogFragment;
  */
 public class DialogUtil {
 
-	public static void showErrorDialog(Exception e) {
-		e.printStackTrace();
-		DialogFragment dialog = new SystemErrorDialogFragment();
+	public static void showErrorDialog(MessageId messageId) {
+		DialogFragment dialog = new ErrorDialogFragment(messageId);
 		dialog.show(ApplicationUtil.getInstance().getFragmentManager(), null);
 	}
 

@@ -7,31 +7,37 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.kickthecanclient.activities.R;
+import com.kickthecanclient.enums.MessageId;
 import com.kickthecanclient.utils.DialogUtil;
 import com.kickthecanclient.utils.MessageUtil;
 
 /**
- * システムエラーダイアログ表示処理.
+ * エラーダイアログ表示処理.
  *
  * @author ebihara
  */
-public class SystemErrorDialogFragment extends DialogFragment {
+public class ErrorDialogFragment extends DialogFragment {
 
 	private Dialog dialog = null;
+	private MessageId messageId = null;
+
+	public ErrorDialogFragment(MessageId messageId) {
+		this.messageId = messageId;
+	}
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		dialog = new Dialog(getActivity());
-		dialog.setContentView(R.layout.activity_error);
+		this.dialog = new Dialog(getActivity());
+		this.dialog.setContentView(R.layout.activity_error);
 
-		TextView textView = (TextView)dialog.getWindow().findViewById(R.id.errorTextView);
-		textView.setText(MessageUtil.getMessage("ERR001"));
+		TextView textView = (TextView)this.dialog.getWindow().findViewById(R.id.errorTextView);
+		textView.setText(MessageUtil.getMessage(this.messageId.name()));
 
-		DialogUtil.setDefaultOptions(this, dialog);
+		DialogUtil.setDefaultOptions(this, this.dialog);
 
 		registListener();
 
-		return dialog;
+		return this.dialog;
 	}
 
 	private void registListener() {
