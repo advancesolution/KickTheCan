@@ -15,7 +15,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.kickthecanclient.beans.PropertyBean;
-import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.CaseUtil;
 import com.kickthecanclient.utils.PropertyUtil;
 
@@ -103,7 +102,7 @@ public class BaseDBAdapter<T> {
 				}
 			}
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 		return entity;
 	}
@@ -118,7 +117,7 @@ public class BaseDBAdapter<T> {
 				contentValues.put(CaseUtil.camelToSnake(propertyBean.getName()),
 						Objects.toString(PropertyUtil.getProperty(o, propertyBean.getName()), null));
 			} catch (Exception e) {
-				ApplicationUtil.exceptionHandler(e);
+				throw new RuntimeException(e);
 			}
 		}
 		return contentValues;
@@ -130,7 +129,7 @@ public class BaseDBAdapter<T> {
 		try {
 			entity = clazz.newInstance();
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 
 		for (Field field : entity.getClass().getDeclaredFields()) {
@@ -144,7 +143,7 @@ public class BaseDBAdapter<T> {
 								field.getName()),PropertyUtil.getProperty(
 								content, field.getName()).toString());
 					} catch (Exception e) {
-						ApplicationUtil.exceptionHandler(e);
+						throw new RuntimeException(e);
 					}
 				}
 			}

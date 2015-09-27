@@ -13,7 +13,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.kickthecanclient.enums.ColumnType;
 import com.kickthecanclient.enums.HalfSymbol;
-import com.kickthecanclient.utils.ApplicationUtil;
 import com.kickthecanclient.utils.CaseUtil;
 import com.kickthecanclient.utils.StringUtil;
 
@@ -44,7 +43,7 @@ public class DBOpenHelper<T> extends SQLiteOpenHelper {
 		try {
 			entity = clazz.newInstance();
 		} catch (Exception e) {
-			ApplicationUtil.exceptionHandler(e);
+			throw new RuntimeException(e);
 		}
 
 		for (Field field : entity.getClass().getDeclaredFields()) {
