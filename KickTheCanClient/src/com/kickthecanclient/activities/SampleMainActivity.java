@@ -8,6 +8,7 @@ import com.kickthecanclient.beans.SampleResponceBean;
 import com.kickthecanclient.beans.ServerCommunicationBean;
 import com.kickthecanclient.dbadapters.SampleDBAdapter;
 import com.kickthecanclient.entities.Sample;
+import com.kickthecanclient.enums.MessageId;
 import com.kickthecanclient.servercommunications.ServerCommunicationManager;
 import com.kickthecanclient.utils.DialogUtil;
 
@@ -29,7 +30,8 @@ public class SampleMainActivity extends BaseActivity {
 			dbAccess(callServer("/sample/search", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity());
 			callServer("/sample/delete", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05")).toEntity();
 		} catch (Exception e) {
-			DialogUtil.showErrorDialog(e);
+			e.printStackTrace();
+	    	DialogUtil.showErrorDialog(MessageId.ERR001);
 		}
 	}
 
@@ -37,7 +39,7 @@ public class SampleMainActivity extends BaseActivity {
 		findViewById(R.id.showErrorDialogButton).setOnClickListener(new View.OnClickListener() {
 		    @Override
 		    public void onClick(View v) {
-		    	DialogUtil.showErrorDialog(new Exception());
+		    	DialogUtil.showErrorDialog(MessageId.ERR001);
 		    }
 		});
 	}
