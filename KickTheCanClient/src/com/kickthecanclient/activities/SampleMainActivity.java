@@ -23,7 +23,7 @@ public class SampleMainActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		try {
 			super.onCreate(savedInstanceState);
-			setContentView(R.layout.activity_sample_main);
+			setContentView(R.layout.sample);
 			registListener();
 			callServer("/sample/insert", new SampleRequestBean(12, "testUserId01", "testPassword01", "testUserName01"));
 			callServer("/sample/update", new SampleRequestBean(12, "testUserId05", "testPassword05", "testUserName05"));
@@ -37,10 +37,10 @@ public class SampleMainActivity extends BaseActivity {
 
 	private void registListener() {
 		findViewById(R.id.showErrorDialogButton).setOnClickListener(new View.OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		    	DialogUtil.showErrorDialog(MessageId.ERR001);
-		    }
+			@Override
+			public void onClick(View v) {
+				DialogUtil.showErrorDialog(MessageId.ERR001);
+			}
 		});
 	}
 

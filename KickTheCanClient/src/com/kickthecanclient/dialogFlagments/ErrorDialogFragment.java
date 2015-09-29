@@ -28,9 +28,9 @@ public class ErrorDialogFragment extends DialogFragment {
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
 		this.dialog = new Dialog(getActivity());
-		this.dialog.setContentView(R.layout.activity_error);
+		this.dialog.setContentView(R.layout.error);
 
-		TextView textView = (TextView)this.dialog.getWindow().findViewById(R.id.errorTextView);
+		TextView textView = (TextView)this.dialog.getWindow().findViewById(R.id.errorText);
 		textView.setText(MessageUtil.getMessage(this.messageId.name()));
 
 		DialogUtil.setDefaultOptions(this, this.dialog);
@@ -42,10 +42,10 @@ public class ErrorDialogFragment extends DialogFragment {
 
 	private void registListener() {
 		dialog.getWindow().findViewById(R.id.errorOkButton).setOnClickListener(new View.OnClickListener() {
-		    @Override
-		    public void onClick(View v) {
-		    	dialog.dismiss();
-		    }
+			@Override
+			public void onClick(View v) {
+				dialog.dismiss();
+			}
 		});
 	}
 }
