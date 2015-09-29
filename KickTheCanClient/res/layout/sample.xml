@@ -6,31 +6,25 @@
 	android:paddingLeft="@dimen/activity_horizontal_margin"
 	android:paddingRight="@dimen/activity_horizontal_margin"
 	android:paddingTop="@dimen/activity_vertical_margin"
-	android:background="@drawable/dialog_back_ground">
+	tools:context="com.kickthecanclient.activities.SampleMainActivity" >
 
 	<TextView
-		android:id="@+id/errorTextView"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_alignParentTop="true"
 		android:layout_centerHorizontal="true"
-		android:layout_marginTop="50dp"
-		android:gravity="center"
-		android:textSize="14px"
-		android:textColor="#727B69"
-		android:text="" />
+		android:layout_marginTop="10dp"
+		android:textSize="16px"
+		android:text="Kick The Can Sample Component" />
 
 	<Button
-		android:id="@+id/errorOkButton"
-		android:layout_width="150dp"
+		android:id="@+id/showErrorDialogButton"
+		android:layout_width="200dp"
 		android:layout_height="30dp"
-		android:layout_below="@+id/errorTextView"
 		android:layout_centerHorizontal="true"
 		android:layout_marginTop="70dp"
-		android:textSize="16px"
-		android:background="@drawable/button_back_ground"
-		android:text="OK"
-		android:textStyle="bold"
+		android:textSize="12px"
+		android:background="@drawable/button"
+		android:text="エラーダイアログを表示する"
 		android:textColor="#ffffff" />
 
 </RelativeLayout>
